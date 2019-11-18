@@ -16,7 +16,7 @@ public:
      * 
      * @return std::vector<Move> Container of all possible moves from current state
      */
-    std::vector<Move> getPossibleMoves();
+    std::vector<Move> getPossibleMoves() const;
 
     /**
      * @brief Creates new GameState representing game after performing given move
@@ -24,12 +24,12 @@ public:
      * @param move Move to perform
      * @return GameState* GameState after performing move
      */
-    GameState* makeMove(Move move); 
+    GameState* makeMove(Move move) const; 
     
     /**
      * @brief Get the prevoius state of the game
      * 
      * @return GameState* representing game state one move into the past
      */
-    GameState* getPreviousGameState();
+    GameState* getPreviousGameState() const;
 };

@@ -15,7 +15,7 @@ class Board
 
     bool _tryPlaceStone(int row, int col, bool white_stone);
     bool _tryResolveCaptures(int row, int col);
-    bool _inBounds(int r, int c);
+    bool _inBounds(int r, int c) const;
 
 public:
     /**
@@ -43,5 +43,5 @@ public:
      * @param col From which column to take
      * @return CELL Content of specified location on the board
      */
-    CELL getCellContent(int row, int col);
+    CELL getCellContent(int row, int col) const;
 };

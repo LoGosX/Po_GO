@@ -14,11 +14,11 @@ bool Board::placeStone(int row, int col, bool white) {
     return true;
 }
 
-bool Board::_inBounds(int r, int c) {
+bool Board::_inBounds(int r, int c) const {
     return r >= 0 && r < _board.size() && c >= 0 && c < _board.size();
 }
 
-CELL Board::getCellContent(int r, int c) {
+CELL Board::getCellContent(int r, int c) const {
     if(!_inBounds(r, c))
         throw "Board position outside of the board!";
     return _board[r][c];
