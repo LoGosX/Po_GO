@@ -35,17 +35,17 @@ public:
 template<typename T>
 T* AssetManager<T>::getAsset(const std::string& key) {
     auto res = _assets.find(key);
-    if(!res.first)
-        return nullptr;
-    return res.second->get();
+    if(res == _assets.end())
+        throw "No asset with associated key!";
+    return res->second.get();
 }
 
 template<typename T>
 void AssetManager<T>::addAsset(const std::string& key, T&& asset) {
-    _assets.emplace(key, std::unique_ptr(std::forward<T>(asset)));
+    _assets.emplace(key, new T(std::forward<T>(asset)));
 }
 
 template<typename T>
 void AssetManager<T>::addAsset(const std::string& key, T* asset) {
-    _assets.emplace(key, std::unique_ptr(asset));
+    _assets.emplace(key, asset);
 }

@@ -1,24 +1,22 @@
+#include <iostream>
 #include <SFML/Graphics.hpp>
+#include "GraphicalBoard.h"
+
+#include "RenderSystem.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-
-    while (window.isOpen())
+    std::cout << 0 << std::endl;
+    
+    RenderSystem rs(nullptr, 800, 800, "XD");
+    
+    while (rs.isWindowOpen())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
+        rs.handleInput();
+        rs.clear();
+        rs.draw();
+        rs.display();
     }
-
+    
     return 0;
 }
