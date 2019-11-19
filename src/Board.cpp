@@ -41,8 +41,9 @@ std::pair<int,int> fromIndex(int i, int s)
     return {i / s, i % s};
 }
 
-std::vector<std::pair<int,int>> tryCapture(std::vector<std::vector<CELL>>& board, int r, int c, std::unordered_set<int>& visited)
+std::vector<std::pair<int,int>> tryCapture(std::vector<std::vector<CELL>>& board, int r, int c)
 {
+    std::unordered_set<int> visited;
     if(r < 0 || c < 0 || r >= board.size() || c >= board.size())
         return {};
     CELL start_cell = board[r][c];
@@ -84,40 +85,22 @@ std::vector<std::pair<int,int>> tryCapture(std::vector<std::vector<CELL>>& board
 }
 
 int Board::_tryResolveCaptures(int row, int col) {
-    std::unordered_set<int> visited;
     int captures = 0;
 
+    if(tryCapture(_board, row, col).size() != 0)
+        return -1;
     for(auto [dr, dc] : std::vector<std::pair<int,int>>{{0,1},{0,-1},{1,0}, {-1,0}})
     {   
         int r = row + dr;
         int c = col + dc;
         if(_inBounds(r,c) && _board[r][c] != CELL::EMPTY && _board[r][c] != _board[row][col])
         {
-            auto capt = tryCapture(_board, row + dr, col + dc, visited);
-            if(std::find(begin(capt), end(capt), std::pair<int,int>(row, col)) != end(capt))
-            {
-                return -1;
-            }
+            auto capt = tryCapture(_board, row + dr, col + dc);
             for(auto [r,c] : capt)
                 _board[r][c] = CELL::EMPTY;
             captures += capt.size();
         }
     }
-    if(captures == 0){
-        bool surrounded = true;
-        for(auto [dr, dc] : std::vector<std::pair<int,int>>{{0,1},{0,-1},{1,0}, {-1,0}})
-        {
-            int r = row + dr, c = col + dc;
-            if(_inBounds(r,c) && (_board[r][c] == CELL::EMPTY || _board[r][c] == _board[row][col]))
-            {
-                surrounded = false;
-                break;
-            }
-        }
-        if(surrounded)
-            return -1;
-    }
-    
 
     return captures;
 }

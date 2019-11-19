@@ -4,9 +4,9 @@
 
 Engine::Engine()
 {
-    _render_system.reset(new RenderSystem (this, 800, 800, "XD"));
-    _render_system->initGraphicalBoard(15, 800, 800);
-    board.reset(new Board(15));
+    _render_system.reset(new RenderSystem (this, 1600, 1600, "XD"));
+    _render_system->initGraphicalBoard(25, 1600, 1600);
+    board.reset(new Board(25));
 }
 
 void Engine::run()
