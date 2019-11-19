@@ -10,11 +10,8 @@
 
 RenderSystem::RenderSystem(Engine* engine, int window_width, int window_height, const char* window_title) : _engine(engine), _window_width(window_width), _window_height(window_height), _window_title(window_title)
 {
-	std::cout << 10 << std::endl;
     _window.reset(new sf::RenderWindow(sf::VideoMode(window_width, window_height), window_title));
-	std::cout << 12 << std::endl;
 	_gb.reset(new GraphicalBoard(5, 400, 400, 10, &_textures_manager));
-	std::cout << 13 << std::endl;
 	initSprites();
 }
 
@@ -39,6 +36,11 @@ bool RenderSystem::clear()
 {
 	_window->clear(sf::Color::White);
 	return true;
+}
+
+void RenderSystem::initGraphicalBoard(int board_size, int board_pixel_w, int board_pixel_h)
+{
+	_gb.reset(new GraphicalBoard(board_size, board_pixel_w, board_pixel_h, 10, &_textures_manager));
 }
 
 
@@ -79,7 +81,10 @@ bool RenderSystem::handleInput()
 			{
 				_mouse_down = true;
 				_last_mouse_local_position = _current_mouse_local_position = sf::Mouse::getPosition(*_window);
-				_gb->tryPlaceStone(_current_mouse_local_position.x, _current_mouse_local_position.y, false);
+				auto r = _gb->canPlaceStone(_current_mouse_local_position.x, _current_mouse_local_position.y);
+				bool white = _engine->getCurrentPlayer();
+				if(r.first)
+					_engine->tryPlaceStone(r.second.first, r.second.second);
 			}
 		}
 		if (event.type == sf::Event::MouseButtonReleased)
@@ -97,6 +102,11 @@ bool RenderSystem::handleInput()
 
 bool RenderSystem::draw()
 {
+	_gb->clean();
+	for(auto [r, c] : _engine->getWhiteStonesPositions())
+		_gb->placeStone(r, c, true);
+	for(auto [r, c] : _engine->getBlackStonesPositions())
+		_gb->placeStone(r, c, false);
 	_window->draw(*_gb);
 	return true;
 }

@@ -5,11 +5,10 @@
 GraphicalBoard::GraphicalBoard(float bs, float bpw, float bph, float sr, AssetManager<sf::Texture>* tm) : 
     _board_size(bs), _pixel_w(bpw), _pixel_h(bph), _stone_radius(sr), _textures_manager(tm), _cell_pixel_w (bpw / bs), _cell_pixel_h(bph / bs)
 {
-    if(bs != 5 && bs != 9)
-        throw "Unsupported board size!";
+
 }
 
-std::pair<bool, std::pair<int,int>> GraphicalBoard::tryPlaceStone(float mx, float my, bool ws)
+std::pair<bool, std::pair<int,int>> GraphicalBoard::canPlaceStone(float mx, float my)
 {
     float x = mx - _board_position_x - 0.5F * _cell_pixel_w;
     float y = my - _board_position_y - 0.5F * _cell_pixel_h;
@@ -19,11 +18,15 @@ std::pair<bool, std::pair<int,int>> GraphicalBoard::tryPlaceStone(float mx, floa
     int r = round(row);
     if(r < 0 || c < 0 || r >= _board_size || c >= _board_size)
         return {false, {-1, -1}};
+    return {true, {r,c}};
+}
+
+void GraphicalBoard::placeStone(int r, int c, bool ws)
+{
     if(ws)
         _white_stones_positons.emplace_back(r,c);   
     else
         _black_stones_positons.emplace_back(r,c);
-    return {true, {r,c}};
 }
 
 void GraphicalBoard::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -71,4 +74,10 @@ void GraphicalBoard::_drawStones(sf::RenderTarget& target) const {
         stone.setPosition((pos.second + .5F) * _cell_pixel_w , (pos.first + .5F) * _cell_pixel_h);
         target.draw(stone);
     }
+}
+
+void GraphicalBoard::clean()
+{
+    _white_stones_positons.clear();
+    _black_stones_positons.clear();
 }

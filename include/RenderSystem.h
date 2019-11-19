@@ -26,6 +26,8 @@ public:
 	RenderSystem(Engine* engine, int window_width, int window_height, const char* window_title);
 	~RenderSystem();
 
+	void initGraphicalBoard(int board_size, int board_pixel_w, int board_pixel_h);
+
 	bool isWindowOpen() const;
 	bool draw();
 	bool display();

@@ -45,12 +45,27 @@ public:
      * 
      * @param mouse_x Mouse's x coordinate in window's coordinates
      * @param mouse_y Mouse's y coordinate in window's coordinates
-     * @return std::pair<bool, std::pair<int,int>> First element of the pair tells us if the move was correct (mouse within the board) and second element is a pair of (row, column) that stone was placed on
+     * @return std::pair<bool, std::pair<int,int>> First element of the pair tells us if the move was correct (mouse within the board) and second element is a pair of (row, column) that stone could be placed on
      */
-    std::pair<bool, std::pair<int,int>> tryPlaceStone(float mouse_x, float mouse_y, bool white_stone);
+    std::pair<bool, std::pair<int,int>> canPlaceStone(float mouse_x, float mouse_y);
+
+    /**
+     * @brief Place stone on the board
+     * 
+     * @param row Which row
+     * @param col Which column
+     * @param white_stone Which stone (black (false) or white (true))
+     */
+    void placeStone(int row, int col, bool white_stone);
 
     /**
      * @brief Draws board and stones
      */
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+    /**
+     * @brief Deletes all pieces from the board
+     * 
+     */
+    void clean();
 };

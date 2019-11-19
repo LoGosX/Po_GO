@@ -13,8 +13,7 @@ class Board
     std::vector<std::vector<CELL>> _board;
     int _n_strings;
 
-    bool _tryPlaceStone(int row, int col, bool white_stone);
-    bool _tryResolveCaptures(int row, int col);
+    int _tryResolveCaptures(int row, int col);
     bool _inBounds(int r, int c) const;
 
 public:
@@ -31,10 +30,11 @@ public:
      * @param row Row to place the stone, where top row has number 0 going down up to size - 1
      * @param col Column to place the stone, where left-most column has number 0 going right up to size - 1
      * @param white_stone What stone to place (true - white stone, false - black stone)
-     * @return true Successfully placed a stone
-     * @return false Failed to place a stone (probably because of illegal move)
+     * @return int:
+     *      -1 - cannot place stone at given place
+     *      x, where x >= 0 - Stone was placed and x pieces were captured as a result
      */
-    bool placeStone(int row, int col, bool white_stone);
+    int placeStone(int row, int col, bool white_stone);
 
     /**
      * @brief Get board content at the specified position
@@ -44,4 +44,6 @@ public:
      * @return CELL Content of specified location on the board
      */
     CELL getCellContent(int row, int col) const;
+
+    int getSize() const;
 };
