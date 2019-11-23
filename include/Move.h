@@ -2,9 +2,7 @@
 
 struct Move
 {
-    /** @brief Which player made a move. 0 - black, 1 - white */
-    int moving_player;
-    /** @brief Was the move a pass */
+   /** @brief Was the move a pass */
     bool pass;
     /** @brief Row of placed stone */
     int row;
@@ -12,4 +10,8 @@ struct Move
     int col;
     /** @brief Color of the stone. 0 - black, 1 - white */
     int color;
+
+    bool operator == (const Move& m) const {
+        return pass && m.pass || (row == m.row && col == m.col && color == m.color); 
+    }
 };

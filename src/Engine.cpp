@@ -1,12 +1,14 @@
 #include <iostream>
 #include "Engine.h"
-
+#include "GameState.h"
 
 Engine::Engine()
 {
+    int board_size = 9;
     _render_system.reset(new RenderSystem (this, 1600, 1600, "XD"));
-    _render_system->initGraphicalBoard(25, 1600, 1600);
-    board.reset(new Board(25));
+    _render_system->initGraphicalBoard(board_size, 1600, 1600);
+    board.reset(new Board(board_size));
+    current_gs = new GameState(board_size);
 }
 
 void Engine::run()
@@ -29,6 +31,7 @@ bool Engine::tryPlaceStone(int r, int c)
         _current_player = (_current_player + 1) % 2;
         return true;
     }
+    return false;
 }
 
 int Engine::getCurrentPlayer() const { return _current_player; }

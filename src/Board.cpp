@@ -87,8 +87,6 @@ std::vector<std::pair<int,int>> tryCapture(std::vector<std::vector<CELL>>& board
 int Board::_tryResolveCaptures(int row, int col) {
     int captures = 0;
 
-    if(tryCapture(_board, row, col).size() != 0)
-        return -1;
     for(auto [dr, dc] : std::vector<std::pair<int,int>>{{0,1},{0,-1},{1,0}, {-1,0}})
     {   
         int r = row + dr;
@@ -102,6 +100,8 @@ int Board::_tryResolveCaptures(int row, int col) {
         }
     }
 
+    if(captures == 0 && tryCapture(_board, row, col).size() != 0)
+        return -1;
     return captures;
 }
 

@@ -5,7 +5,7 @@
 GraphicalBoard::GraphicalBoard(float bs, float bpw, float bph, float sr, AssetManager<sf::Texture>* tm) : 
     _board_size(bs), _pixel_w(bpw), _pixel_h(bph), _stone_radius(sr), _textures_manager(tm), _cell_pixel_w (bpw / bs), _cell_pixel_h(bph / bs)
 {
-
+    _stone_radius = _cell_pixel_w / 5.F;
 }
 
 std::pair<bool, std::pair<int,int>> GraphicalBoard::canPlaceStone(float mx, float my)

@@ -1,13 +1,15 @@
 #pragma once
 #include "RenderSystem.h"
 #include <memory>
-#include "GameState.h"
 #include "Board.h"
+
+class GameState;
 
 class Engine
 {
     std::unique_ptr<RenderSystem> _render_system;
     std::unique_ptr<Board> board;
+    GameState* current_gs;
     void update();
     int _current_player {0}; //0 - black, 1 - white
 public:

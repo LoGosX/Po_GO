@@ -39,7 +39,6 @@ public:
      */
     GraphicalBoard(float board_size, float board_pixel_width, float board_pixel_height, float stone_radius, AssetManager<sf::Texture>* textures);
     
-    
     /**
      * @brief Tries to place a stone at the specified location of the mouse
      * 
