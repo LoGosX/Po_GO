@@ -4,15 +4,27 @@
 
 Engine::Engine()
 {
-    int board_size = 9;
-    _render_system.reset(new RenderSystem (this, 1600, 1600, "XD"));
-    _render_system->initGraphicalBoard(board_size, 1600, 1600);
-    board.reset(new Board(board_size));
-    current_gs = new GameState(board_size);
+    _board_size = 9;
+    _width = 1200;
+    _height = 800;
+    _render_system.reset(new RenderSystem (this, _width, _height, "XD"));
+    _render_system->initGraphicalBoard(_board_size, _height, _height);
+   
+}
+
+void Engine::restart() {
+    board.reset(new Board(_board_size));
+    if(!current_gs)
+    {
+        delete current_gs;
+        current_gs = nullptr;
+    }
+    current_gs = new GameState(_board_size);
 }
 
 void Engine::run()
 {
+    restart();
     while (_render_system->isWindowOpen())
     {
         _render_system->handleInput();

@@ -129,6 +129,9 @@ void RenderSystem::initSprites()
 		sf::Sprite s;
 		s.setTexture(text);
         _textures_manager.addAsset(x[0], std::move(text));
-		//_sprites_manager.addAsset(x[0], std::move(s));
     }
+	sf::Font font;
+	font.loadFromFile("arial.tff");
+	_font_manager.addAsset(_font_name, std::move(font));
+
 }

@@ -12,6 +12,9 @@ class RenderSystem
 	std::unique_ptr<sf::RenderWindow> _window;
 	Engine* _engine;
   	AssetManager<sf::Texture> _textures_manager;
+    AssetManager<sf::Font> _font_manager;
+    const char* _font_name = "arial";
+
 
 	bool _mouse_down{ false };
 	bool _mouse_moved{ false };

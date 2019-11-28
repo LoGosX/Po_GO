@@ -46,4 +46,23 @@ public:
     CELL getCellContent(int row, int col) const;
 
     int getSize() const;
+
+
+    /**
+     * @brief Compares the boards elementwise
+     * 
+     * @param other Board to compare with
+     * @return true Boards have the same stones in the same places
+     * @return false Boards are different
+     */
+    bool operator==(const Board& other);
+
+    /**
+     * @brief Checks for board inequality. Implemented as !(*this == other)
+     * 
+     * @param other Board to campare to
+     * @return true Boards are different
+     * @return false Boards are the same
+     */
+    bool operator!=(const Board& other);
 };

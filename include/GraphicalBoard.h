@@ -23,6 +23,8 @@ class GraphicalBoard : public sf::Drawable
     const char* _board5x5_key {"board5x5"};
     const char* _board9x9_key {"board9x9"};
     AssetManager<sf::Texture>* _textures_manager;
+    AssetManager<sf::Font>* _font_manager;
+    const char* _font_name = "arial";
 
     void _drawBoard(sf::RenderTarget& target) const;
     void _drawStones(sf::RenderTarget& target) const;

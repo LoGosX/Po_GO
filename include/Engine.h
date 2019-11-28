@@ -12,6 +12,10 @@ class Engine
     GameState* current_gs;
     void update();
     int _current_player {0}; //0 - black, 1 - white
+    int _board_size;
+    int _width;
+    int _height;
+    void restart();
 public:
 
     Engine();

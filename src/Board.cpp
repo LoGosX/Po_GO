@@ -108,3 +108,17 @@ int Board::_tryResolveCaptures(int row, int col) {
 int Board::getSize() const {
     return _board.size();
 }
+
+bool Board::operator!=(const Board& other) {
+    return !operator==(other);
+}
+
+bool Board::operator==(const Board& other) {
+    for(int i = 0; i < _board.size(); i++) {
+        for(int j = 0; j < _board.size(); j++) {
+            if(_board[i][j] != other._board[i][j])
+                return false;
+        }
+    }
+    return true;
+}
