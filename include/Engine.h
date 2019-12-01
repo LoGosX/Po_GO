@@ -13,6 +13,7 @@ class Engine
     int _width;
     int _height;
     const char * _save_file {"save.txt"};
+    bool _initialized {false};
 
     void _load();
 public:

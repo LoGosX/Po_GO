@@ -20,7 +20,12 @@ RenderSystem::RenderSystem(Engine* engine, int window_width, int window_height, 
 	_current_player_button->setDisplayText("Current player: ");
 	_current_player_button->setTextColor(sf::Color::Black);
 	_current_player_button->setFillColor(sf::Color(0,0,0,0));
-	_current_player_button->setFont(_font_manager.getAsset(_font_name));
+	try{
+		_current_player_button->setFont(_font_manager.getAsset(_font_name));
+	}catch(std::exception e) {
+		std::cerr << "There was an exception in RenderSystem::RenderSystem()!\n"
+			<< "Exception message: " << e.what() << std::endl;
+	}
 	_buttons.emplace_back(_current_player_button);
 	_buttons_hovered.push_back(false);
 

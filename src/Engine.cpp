@@ -8,7 +8,14 @@ Engine::Engine(int width, int height, int size)
     _board_size = size;
     _width = width;
     _height = height;
-    _render_system.reset(new RenderSystem (this, _width, _height, "XD"));
+    try{
+		_render_system.reset(new RenderSystem (this, _width, _height, "XD"));
+	}catch(std::exception e) {
+		std::cerr << "There was an exception while creating RenderSystem!\n"
+			<< "Exception message: " << e.what() << std::endl;
+        _initialized = false;
+	}
+    _initialized = true;
 }
 
 void Engine::restart() {
@@ -39,6 +46,8 @@ void Engine::goBackOneMove() {
 
 void Engine::run()
 {   
+    if(!_initialized)
+        return;
     //std::cerr << "load()" << std::endl;
     _load();
     while (_render_system->isWindowOpen())
