@@ -65,4 +65,11 @@ public:
      * @return false Boards are the same
      */
     bool operator!=(const Board& other);
+
+    /**
+     * @brief Calculates points using Area Scoring. More: https://www.wikihow.com/Score-a-Game-of-Go
+     * 
+     * @return pair<int,int> (black score, white score)
+     */
+    std::pair<int, int> getPoints() const;
 };

@@ -11,7 +11,7 @@ class GameState
     friend class MCTSAlg;
 
     Board _board;
-    int _current_player;
+    int _current_player {0};
     GameState* _previous_gs {nullptr};
     std::vector<std::pair<Move, GameState*>> _next_game_states;
     int _n_uninitialized_children {0};
@@ -22,8 +22,15 @@ class GameState
     int _n_visits{0};
     int _mcts_value{0};
 public:
-    GameState(int board_size);
-    GameState(const Board& board);
+    GameState(int board_size, int player, GameState* previous);
+    GameState(const Board& board, int player, GameState* previous);
+
+    /**
+     * @brief Get the Board object
+     * 
+     * @return const Board& 
+     */
+    const Board& getBoard() const;
 
     /**
      * @brief Get the move that led to this GameState
@@ -61,19 +68,18 @@ public:
      */
     std::pair<Move, GameState*> getRandomTransition();
 
-    
-    // /**
-    //  * @brief Get number of visits in MCTS algorithm
-    //  * 
-    //  * @return int Number of visits
-    //  */
-    // int getNumberOfVisits() const;
+    /**
+     * @brief Get the Current Player
+     * 
+     * @return int (0 - black, 1 - white)
+     */
+    int getCurrentPlayer() const;
 
-    // /**
-    //  * @brief get value of this game state used in MCTS algorithm
-    //  * 
-    //  * @return int 
-    //  */
-    // int getMCTSValue() const;
+    /**
+     * @brief Get the move that led to this game state
+     * 
+     * @return Move 
+     */
+    Move getMoveHere() const;
     
 };

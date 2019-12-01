@@ -29,6 +29,11 @@ std::pair<bool, std::pair<int,int>> GraphicalBoard::canPlaceStone(float mx, floa
     float row = y / _cell_pixel_h;
     int c = round(col);
     int r = round(row);
+    //check if click is withing 1/4 of cell radius
+    if((c - col) * (c - col) > 1.F / 16)
+        return {false, {-1,-1}};
+    if((r - row) * (r - row) > 1.F/ 16)
+        return {false, {-1,-1}};
     if(r < 0 || c < 0 || r >= _board_size || c >= _board_size)
         return {false, {-1, -1}};
     return {true, {r,c}};

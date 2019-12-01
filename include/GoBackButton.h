@@ -4,15 +4,15 @@
 
 class Engine;
 
-class RestartButton : public OnHoverButton {
+class GoBackButton : public OnHoverButton {
 
     Engine* _engine;
 
 public:
-    RestartButton(Engine*);
+    GoBackButton(Engine*);
 
     /**
-     * @brief Restarts game on click
+     * @brief Goes back oe turn
      * 
      */
     void onClick() override;

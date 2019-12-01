@@ -1,8 +1,17 @@
 #pragma once
 #include "GameState.h"
+#include <iostream>
 
-GameState::GameState(int s) : _board(s) { _computeMoves(); }
-GameState::GameState(const Board& board) : _board(board) { _computeMoves(); }
+GameState::GameState(int s, int player, GameState* previous) 
+    : _board(s), _current_player(player), _previous_gs(previous) 
+    { _computeMoves(); }
+GameState::GameState(const Board& board, int player, GameState* previous) 
+    : _board(board), _current_player(player), _previous_gs(previous) 
+    { _computeMoves(); }
+
+const Board& GameState::getBoard() const {
+    return _board;
+}
 
 void GameState::_computeMoves()
 {
@@ -14,16 +23,15 @@ void GameState::_computeMoves()
             if(b.placeStone(r, c, _current_player) != -1)
             {
                 //check for board repetition
-                if(!(getPreviousGameState() && getPreviousGameState()->getPreviousGameState() 
-                    && getPreviousGameState()->getPreviousGameState()->_board == b)) {
+                if(!(_previous_gs && _previous_gs->_board == b)){
                     Move m{
                         false, r, c, _current_player
                     };
                     _next_game_states.emplace_back(
                         m, nullptr
                     );
-                    b = _board;
                 }
+                b = _board;
             }
         }   
     }
@@ -42,9 +50,7 @@ GameState* GameState::_gameStateFromMove(Move m)
 {
     Board b = _board;
     b.placeStone(m.row, m.col, m.color);
-    GameState* gs = new GameState(b);
-    gs->_current_player = (_current_player + 1) % 2;
-    gs->_previous_gs = this;
+    GameState* gs = new GameState(b, (_current_player + 1) % 2, this);
     gs->_move_here = m;
     if(_previous_gs != nullptr /*not the main root*/ && m.pass && gs->_move_here.pass)
         gs->_terminal = true;
@@ -76,4 +82,12 @@ GameState* GameState::afterMove(Move move) {
 
 GameState* GameState::getPreviousGameState() const {
     return _previous_gs;
+}
+
+int GameState::getCurrentPlayer() const {
+    return _current_player;
+}
+
+Move GameState::getMoveHere() const {
+    return _move_here;
 }
