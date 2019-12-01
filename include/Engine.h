@@ -15,8 +15,13 @@ class Engine
     int _board_size;
     int _width;
     int _height;
-    void restart();
 public:
+
+    /**
+     * @brief restarts the game
+     * 
+     */
+    void restart();
 
     Engine();
 

@@ -6,6 +6,19 @@ GraphicalBoard::GraphicalBoard(float bs, float bpw, float bph, float sr, AssetMa
     _board_size(bs), _pixel_w(bpw), _pixel_h(bph), _stone_radius(sr), _textures_manager(tm), _cell_pixel_w (bpw / bs), _cell_pixel_h(bph / bs)
 {
     _stone_radius = _cell_pixel_w / 5.F;
+
+    _white_stone.setRadius(_stone_radius);
+    _white_stone.setOrigin({_stone_radius, _stone_radius});
+    _white_stone.setOutlineColor(sf::Color::Black);
+    _white_stone.setOutlineThickness(5.F);
+    _white_stone.setFillColor(sf::Color::White);
+
+    _black_stone.setRadius(_stone_radius);
+    _black_stone.setOrigin({_stone_radius, _stone_radius});
+    _black_stone.setOutlineColor(sf::Color::Black);
+    _black_stone.setOutlineThickness(5.F);
+    _black_stone.setFillColor(sf::Color::Black);
+
 }
 
 std::pair<bool, std::pair<int,int>> GraphicalBoard::canPlaceStone(float mx, float my)
@@ -57,18 +70,13 @@ void GraphicalBoard::_drawBoard(sf::RenderTarget& target) const {
 }
 
 void GraphicalBoard::_drawStones(sf::RenderTarget& target) const {
-    sf::CircleShape stone;
-    stone.setRadius(_stone_radius);
-    stone.setOrigin({_stone_radius, _stone_radius});
-    stone.setOutlineColor(sf::Color::Black);
-    stone.setOutlineThickness(5.F);
-    stone.setFillColor(sf::Color::White);
+    auto stone = _white_stone;
     for(auto pos : _white_stones_positons)
     {
         stone.setPosition(pos.second * _cell_pixel_w + 0.5F * _cell_pixel_w, pos.first * _cell_pixel_h + 0.5F * _cell_pixel_h);
         target.draw(stone);
     }
-    stone.setFillColor(sf::Color::Black);
+    stone = _black_stone;
     for(auto pos : _black_stones_positons)
     {
         stone.setPosition((pos.second + .5F) * _cell_pixel_w , (pos.first + .5F) * _cell_pixel_h);
@@ -76,6 +84,12 @@ void GraphicalBoard::_drawStones(sf::RenderTarget& target) const {
     }
 }
 
+sf::CircleShape GraphicalBoard::getWhiteStoneShape() const {
+    return _white_stone;
+}
+sf::CircleShape GraphicalBoard::getBlackStoneShape() const {
+    return _black_stone;
+}
 void GraphicalBoard::clean()
 {
     _white_stones_positons.clear();

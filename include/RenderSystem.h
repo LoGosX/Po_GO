@@ -3,8 +3,8 @@
 #include "SFML/Graphics.hpp"
 #include "AssetsManager.h"
 #include "GraphicalBoard.h"
-
 class Engine;
+class Button;
 
 class RenderSystem
 {
@@ -15,6 +15,10 @@ class RenderSystem
     AssetManager<sf::Font> _font_manager;
     const char* _font_name = "arial";
 
+	Button* _current_player_button;
+	Button* _restart_button;
+	bool _cpb_hovered {false};
+	bool _rb_hovered {false};
 
 	bool _mouse_down{ false };
 	bool _mouse_moved{ false };

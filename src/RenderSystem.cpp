@@ -4,7 +4,8 @@
 #include "SFML/Graphics.hpp"
 #include "RenderSystem.h"
 #include "Engine.h"
-
+#include "Button.h"
+#include "RestartButton.h"
 
 
 
@@ -13,6 +14,19 @@ RenderSystem::RenderSystem(Engine* engine, int window_width, int window_height, 
     _window.reset(new sf::RenderWindow(sf::VideoMode(window_width, window_height), window_title));
 	_gb.reset(new GraphicalBoard(5, 400, 400, 10, &_textures_manager));
 	initSprites();
+
+	_current_player_button = new Button;
+	_current_player_button->setPosition({0.75F * window_width, 0.1F * window_height});
+	_current_player_button->setDisplayText("Current player: ");
+	_current_player_button->setTextColor(sf::Color::Black);
+	_current_player_button->setFillColor(sf::Color(0,0,0,0));
+	_current_player_button->setFont(_font_manager.getAsset(_font_name));
+
+	_restart_button = new RestartButton(_engine);
+	_restart_button->setPosition({0.75F * window_width, 0.25F * window_height});
+	_restart_button->setDisplayText("\n        Restart");
+	_restart_button->setFillColor(sf::Color::Red);
+	_restart_button->setFont(_font_manager.getAsset(_font_name));
 }
 
 
@@ -34,7 +48,7 @@ bool RenderSystem::display()
 
 bool RenderSystem::clear()
 {
-	_window->clear(sf::Color::White);
+	_window->clear(sf::Color::Cyan);
 	return true;
 }
 
@@ -85,12 +99,28 @@ bool RenderSystem::handleInput()
 				bool white = _engine->getCurrentPlayer();
 				if(r.first)
 					_engine->tryPlaceStone(r.second.first, r.second.second);
+				if(_restart_button->pointInside(sf::Vector2f(_current_mouse_local_position)))
+					_restart_button->onClick();
 			}
 		}
 		if (event.type == sf::Event::MouseButtonReleased)
 		{
 			if (!sf::Mouse::isButtonPressed(sf::Mouse::Left))
 				_mouse_down = false;
+		}
+
+		auto mp = sf::Mouse::getPosition(*_window);
+		if(_restart_button->pointInside(sf::Vector2f(mp)))
+		{
+			if(!_rb_hovered)
+			{
+				_restart_button->onHover();
+				_rb_hovered = true;
+			}
+		}else{
+			if(_rb_hovered)
+				_restart_button->onHoverLeave();
+			_rb_hovered = false;
 		}
 	}
 
@@ -102,12 +132,21 @@ bool RenderSystem::handleInput()
 
 bool RenderSystem::draw()
 {
+
 	_gb->clean();
 	for(auto [r, c] : _engine->getWhiteStonesPositions())
 		_gb->placeStone(r, c, true);
 	for(auto [r, c] : _engine->getBlackStonesPositions())
 		_gb->placeStone(r, c, false);
 	_window->draw(*_gb);
+
+
+	_window->draw(*_restart_button);
+	_window->draw(*_current_player_button);
+
+	auto cp = (_engine->getCurrentPlayer() == 0 ? _gb->getBlackStoneShape() : _gb->getWhiteStoneShape());
+	cp.setPosition(_current_player_button->getPosition() + sf::Vector2f(200, 10));
+	_window->draw(cp);
 	return true;
 }
 
@@ -131,7 +170,6 @@ void RenderSystem::initSprites()
         _textures_manager.addAsset(x[0], std::move(text));
     }
 	sf::Font font;
-	font.loadFromFile("arial.tff");
+	font.loadFromFile("../assets/arial.ttf");
 	_font_manager.addAsset(_font_name, std::move(font));
-
 }

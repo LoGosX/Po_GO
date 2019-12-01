@@ -20,6 +20,7 @@ void Engine::restart() {
         current_gs = nullptr;
     }
     current_gs = new GameState(_board_size);
+    _current_player = 0;
 }
 
 void Engine::run()

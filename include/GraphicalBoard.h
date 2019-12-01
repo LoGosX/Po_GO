@@ -10,6 +10,9 @@ class GraphicalBoard : public sf::Drawable
     std::vector<std::pair<int, int>> _white_stones_positons;
     std::vector<std::pair<int, int>> _black_stones_positons;
 
+    sf::CircleShape _black_stone;
+    sf::CircleShape _white_stone;
+
     float _board_size;
     float _board_position_x {0};
     float _board_position_y {0};
@@ -23,8 +26,6 @@ class GraphicalBoard : public sf::Drawable
     const char* _board5x5_key {"board5x5"};
     const char* _board9x9_key {"board9x9"};
     AssetManager<sf::Texture>* _textures_manager;
-    AssetManager<sf::Font>* _font_manager;
-    const char* _font_name = "arial";
 
     void _drawBoard(sf::RenderTarget& target) const;
     void _drawStones(sf::RenderTarget& target) const;
@@ -41,6 +42,20 @@ public:
      */
     GraphicalBoard(float board_size, float board_pixel_width, float board_pixel_height, float stone_radius, AssetManager<sf::Texture>* textures);
     
+    /**
+     * @brief Get the White Stone Shape object
+     * 
+     * @return sf::CircleShape 
+     */
+    sf::CircleShape getWhiteStoneShape() const;
+
+    /**
+     * @brief Get the Black Stone Shape object
+     * 
+     * @return sf::CircleShape 
+     */
+    sf::CircleShape getBlackStoneShape() const;
+
     /**
      * @brief Tries to place a stone at the specified location of the mouse
      * 

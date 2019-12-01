@@ -4,7 +4,7 @@
 
 class Button : public sf::Drawable {
 
-    std::function<void()> _on_click;
+protected:
     std::string _display_text;
     sf::Font* _font {nullptr};
     sf::RectangleShape _shape;
@@ -54,6 +54,20 @@ public:
     void setOutlineColor(sf::Color c);
 
 
+    /**
+     * @brief Sets the color of the text
+     * 
+     * @param c sf::Color
+     */
+    void setTextColor(sf::Color c);
+
+    /**
+     * @brief gets the position of the button
+     * 
+     * @return sf::Vector2f 
+     */
+    sf::Vector2f getPosition() const;
+
     template<typename T>
     /**
      * @brief Defines what should happen on button click
@@ -70,10 +84,23 @@ public:
     void setPosition(sf::Vector2f position); 
 
     /**
-     * @brief Triggers a callable that was assigned to this button
+     * @brief A virtual method that specifies the usage of the button
      * 
      */
-    void click();
+    virtual void onClick();
+
+    /**
+     * @brief This method is called whenever mouse cursor is inside this button
+     * 
+     */
+    virtual void onHover();
+
+    
+    /**
+     * @brief This method is called whenever mouse cursor leaves this button
+     * 
+     */
+    virtual void onHoverLeave();
 
     /**
      * @brief Checks if the point lies inside this button
@@ -90,6 +117,3 @@ public:
      */
     void draw(sf::RenderTarget&, sf::RenderStates) const override;
 };
-
-template<typename T>
-void Button::setOnClick(T&& t) {  _on_click = std::forward<T>(t); }
