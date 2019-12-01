@@ -7,7 +7,7 @@
 #include "Button.h"
 #include "RestartButton.h"
 #include "GoBackButton.h"
-
+#include "PassButton.h"
 
 
 RenderSystem::RenderSystem(Engine* engine, int window_width, int window_height, const char* window_title) : _engine(engine), _window_width(window_width), _window_height(window_height), _window_title(window_title)
@@ -42,15 +42,24 @@ RenderSystem::RenderSystem(Engine* engine, int window_width, int window_height, 
 	_buttons.emplace_back(_go_back_button);
 	_buttons_hovered.push_back(false);
 
+	auto _pass_button = new PassButton(_engine);
+	_pass_button->setPosition({0.75F * window_width, 0.55F * window_height});
+	_pass_button->setDisplayText("\n        Pass");
+	_pass_button->setTextColor(sf::Color::Black);
+	_pass_button->setFillColor(sf::Color::White);
+	_pass_button->setFont(_font_manager.getAsset(_font_name));
+	_buttons.emplace_back(_pass_button);
+	_buttons_hovered.push_back(false);
+
 	auto _black_score_btn = new Button;
-	_black_score_btn->setPosition({0.75F * window_width, 0.6F * window_height});
+	_black_score_btn->setPosition({0.75F * window_width, 0.7F * window_height});
 	_black_score_btn->setDisplayText("     Black's score: ");
 	_black_score_btn->setTextColor(sf::Color::Black);
 	_black_score_btn->setFillColor(sf::Color(0,0,0,0));
 	_black_score_btn->setFont(_font_manager.getAsset(_font_name));
 	_buttons.emplace_back(_black_score_btn);
 	auto _white_score_btn = new Button;
-	_white_score_btn->setPosition({0.75F * window_width, 0.7F * window_height});
+	_white_score_btn->setPosition({0.75F * window_width, 0.8F * window_height});
 	_white_score_btn->setDisplayText("     White's score: ");
 	_white_score_btn->setTextColor(sf::Color::Black);
 	_white_score_btn->setFillColor(sf::Color(0,0,0,0));

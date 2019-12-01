@@ -18,7 +18,7 @@ void Engine::restart() {
         delete current_gs;
         current_gs = nullptr;
     }
-    current_gs = new GameState(_board_size, 0, nullptr);
+    current_gs = new GameState(_board_size, 0, nullptr, {0, -1, -1, -1});
 
     _render_system->initGraphicalBoard(_board_size, _height, _height);
 }
@@ -27,7 +27,7 @@ void Engine::_load() {
     
     current_gs = GameStateSaver().restore(_save_file);
     if(!current_gs)
-        current_gs = new GameState(_board_size, 0, nullptr);
+        current_gs = new GameState(_board_size, 0, nullptr, {0,-1,-1,-1});
     _render_system->initGraphicalBoard(current_gs->getBoard().getSize(), _height, _height);
 }
 
@@ -38,15 +38,21 @@ void Engine::goBackOneMove() {
 }
 
 void Engine::run()
-{
+{   
+    //std::cerr << "load()" << std::endl;
     _load();
     while (_render_system->isWindowOpen())
     {
+        //std::cerr << "handleInput()" << std::endl;
         _render_system->handleInput();
+        //std::cerr << "clear()" << std::endl;
         _render_system->clear();
+        //std::cerr << "draw()" << std::endl;
         _render_system->draw();
+        //std::cerr << "display()" << std::endl;
         _render_system->display();
     }
+    //std::cerr << "save()" << std::endl;
     GameStateSaver().save(current_gs, _save_file);
 }
 
@@ -98,4 +104,16 @@ std::vector<std::pair<int,int>> Engine::getWhiteStonesPositions() const{
 
 std::pair<int,int> Engine::getScores() const{
     return current_gs->getBoard().getPoints();
+}
+
+void Engine::passTurn() {
+    Move m;
+    m.pass = true;
+    for(auto move : current_gs->getPossibleMoves())
+    {
+        if(move.pass){
+            current_gs = current_gs->afterMove(move);
+            break;
+        }
+    }   
 }

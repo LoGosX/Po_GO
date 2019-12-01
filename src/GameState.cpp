@@ -2,11 +2,11 @@
 #include "GameState.h"
 #include <iostream>
 
-GameState::GameState(int s, int player, GameState* previous) 
-    : _board(s), _current_player(player), _previous_gs(previous) 
+GameState::GameState(int s, int player, GameState* previous, Move move_here) 
+    : _board(s), _current_player(player), _previous_gs(previous), _move_here(move_here)
     { _computeMoves(); }
-GameState::GameState(const Board& board, int player, GameState* previous) 
-    : _board(board), _current_player(player), _previous_gs(previous) 
+GameState::GameState(const Board& board, int player, GameState* previous, Move move_here) 
+    : _board(board), _current_player(player), _previous_gs(previous), _move_here(move_here)
     { _computeMoves(); }
 
 const Board& GameState::getBoard() const {
@@ -35,8 +35,10 @@ void GameState::_computeMoves()
             }
         }   
     }
-    Move m{true, -1, -1, -1};
-    _next_game_states.emplace_back(m, nullptr);
+    if(!(_move_here.pass && _previous_gs && _previous_gs->_move_here.pass)){
+        Move m{true, -1, -1, -1};
+        _next_game_states.emplace_back(m, nullptr);
+    }
     _n_uninitialized_children = _next_game_states.size();
     if(_n_uninitialized_children == 0)
         _terminal = true;
@@ -50,8 +52,7 @@ GameState* GameState::_gameStateFromMove(Move m)
 {
     Board b = _board;
     b.placeStone(m.row, m.col, m.color);
-    GameState* gs = new GameState(b, (_current_player + 1) % 2, this);
-    gs->_move_here = m;
+    GameState* gs = new GameState(b, (_current_player + 1) % 2, this, m);
     if(_previous_gs != nullptr /*not the main root*/ && m.pass && gs->_move_here.pass)
         gs->_terminal = true;
     _n_uninitialized_children -= 1;
@@ -60,6 +61,8 @@ GameState* GameState::_gameStateFromMove(Move m)
 }
 
 std::vector<Move> GameState::getPossibleMoves() {
+    if(_move_here.pass && _previous_gs && _previous_gs->_move_here.pass)
+        return {};
     std::vector<Move> moves;
     for(const auto& x : _next_game_states)
         moves.push_back(x.first);

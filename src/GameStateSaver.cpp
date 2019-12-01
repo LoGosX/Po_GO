@@ -33,8 +33,10 @@ GameState* GameStateSaver::restore(const char * path){
     if(file.good()){
         int size, row, column, color, pass;
         file >> size;
-        g = new GameState(size, 0, nullptr);
+
+        g = new GameState(size, 0, nullptr, {0, -1, -1, -1});
         while(file >> row >> column >> color >> pass) {
+            //std::cerr << concatenate(row, column, color, pass) << std::endl;
             Move m {pass, row, column, color};
             g = g->afterMove(m);
         }

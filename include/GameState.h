@@ -22,8 +22,8 @@ class GameState
     int _n_visits{0};
     int _mcts_value{0};
 public:
-    GameState(int board_size, int player, GameState* previous);
-    GameState(const Board& board, int player, GameState* previous);
+    GameState(int board_size, int player, GameState* previous, Move move_here);
+    GameState(const Board& board, int player, GameState* previous, Move move_here);
 
     /**
      * @brief Get the Board object

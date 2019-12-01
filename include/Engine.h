@@ -9,7 +9,6 @@ class Engine
 {
     std::unique_ptr<RenderSystem> _render_system;
     GameState* current_gs;
-    void update();
     int _board_size;
     int _width;
     int _height;
@@ -38,8 +37,27 @@ public:
      */
     void goBackOneMove();
 
+    /**
+     * @brief Checks if 
+     * 
+     * @param row 
+     * @param col 
+     * @return true 
+     * @return false 
+     */
     bool tryPlaceStone(int row, int col);
 
+    /**
+     * @brief Passes turn
+     * 
+     */
+    void passTurn();
+
+    /**
+     * @brief Gets the current player
+     * 
+     * @return int 0 - black, 1 - white
+     */
     int getCurrentPlayer() const;
 
 
