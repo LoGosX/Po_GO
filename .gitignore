@@ -6,3 +6,5 @@ build/*
 !.vscode/extensions.json
 *.code-workspace
 save.txt
+documentation/*
+.vs/*
